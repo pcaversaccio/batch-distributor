@@ -38,8 +38,6 @@ task(
   }
 );
 
-// Input the Solidity version you use in your files in the folder `contracts`
-
 const config: HardhatUserConfig = {
   solidity: {
     version: "0.8.9",
@@ -224,33 +222,18 @@ const config: HardhatUserConfig = {
     },
   },
   xdeploy: {
-    // Change this name to the name of your main .sol file; e.g. "Token.sol" would be "Token"
-    contract: "Greeter",
-
-    // Change to `undefined` if your constructor does not have any input arguments
-    constructorArgsPath: "./deploy-args.ts",
-
-    // The salt must be the same for each EVM chain for which you want to have a single contract address.
-    // Change the salt if you are doing a re-deployment with the same codebase
+    contract: "BatchDistributor",
+    constructorArgsPath: undefined,
     salt: process.env.SALT,
-
-    // This is your wallet's private key
     signer: process.env.PRIVATE_KEY,
-
-    // Use the network names specified here: https://github.com/pcaversaccio/xdeployer#configuration.
-    // Use `localhost` or `hardhat` for local testing
-    networks: ["hardhat", "rinkeby", "bscTestnet"],
-
-    // Use the matching env URL with your chosen RPC in the `.env` file
+    networks: ["rinkeby", "kovan", "ropsten", "goerli"],
     rpcUrls: [
-      "hardhat",
       process.env.ETH_RINKEBY_TESTNET_URL,
-      process.env.BSC_TESTNET_URL,
+      process.env.ETH_KOVAN_TESTNET_URL,
+      process.env.ETH_ROPSTEN_TESTNET_URL,
+      process.env.ETH_GOERLI_TESTNET_URL,
     ],
-
-    // Maximum limit is 15 * 10 ** 6 or 15,000,000. If the deployments are failing, try increasing this number.
-    // However, keep in mind that this costs money in a production environment!
-    gasLimit: 1.2 * 10 ** 6,
+    gasLimit: 1.6 * 10 ** 6,
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
@@ -319,8 +302,8 @@ const config: HardhatUserConfig = {
     },
   },
   tenderly: {
-    project: "MyAwesomeUsername",
-    username: "super-awesome-project",
+    username: "pcaversaccio",
+    project: "project",
   },
 };
 

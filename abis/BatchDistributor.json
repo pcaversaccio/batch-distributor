@@ -1,0 +1,5 @@
+[
+  "constructor() payable",
+  "function distributeEther(tuple(tuple(address,uint256)[])) payable",
+  "function distributeToken(address,tuple(tuple(address,uint256)[]))"
+]

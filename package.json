@@ -1,23 +1,22 @@
 {
-  "name": "hardhat-project-template-ts",
+  "name": "batch-distributor",
   "version": "1.0.0",
-  "description": "A fully-fledged Hardhat project template based on TypeScript.",
+  "description": "Helper smart contract for batch sending both native and ERC-20 tokens.",
   "keywords": [
-    "template",
-    "typescript",
     "ethereum",
-    "smart-contracts",
     "solidity",
-    "hardhat"
+    "erc20",
+    "ether",
+    "smart-contract"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/pcaversaccio/hardhat-project-template-ts"
+    "url": "https://github.com/pcaversaccio/batch-distributor"
   },
   "bug": {
-    "url": "https://github.com/pcaversaccio/hardhat-project-template-ts/issues"
+    "url": "https://github.com/pcaversaccio/batch-distributor/issues"
   },
-  "author": "Pascal Marco Caversaccio <pascal.caversaccio@hotmail.ch>",
+  "author": "0x6d61646520666f722074686520776f726c6421",
   "license": "MIT",
   "scripts": {
     "help": "npx hardhat help",

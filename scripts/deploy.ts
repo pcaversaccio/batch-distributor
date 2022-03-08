@@ -1,15 +1,15 @@
 import hre, { ethers } from "hardhat";
 
 async function main() {
-  const Contract = await ethers.getContractFactory("Greeter");
-  const contract = await Contract.deploy("Hello, Hardhat!");
+  const Contract = await ethers.getContractFactory("BatchDistributor");
+  const contract = await Contract.deploy();
 
   await contract.deployed();
 
-  console.log("Greeter deployed to:", contract.address);
+  console.log("BatchDistributor deployed to:", contract.address);
 
   await hre.tenderly.verify({
-    name: "Greeter",
+    name: "BatchDistributor",
     address: contract.address,
   });
 }
