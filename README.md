@@ -1,6 +1,6 @@
 # Batch Distributor
 
-[![build status](https://github.com/pcaversaccio/batch-distributor/actions/workflows/test-contracts.yml/badge.svg)](https://github.com/pcaversaccio/batch-distributor/actions)
+[![build status](https://github.com/pcaversaccio/batch-distributor/actions/workflows/test-contracts.yml/badge.svg)](./actions)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
 ## Installation
@@ -57,15 +57,15 @@ The parameter `batch` is a nested struct object that contains an array of tuples
 
 The smart contract [`BatchDistributor.sol`](./contracts/BatchDistributor.sol) has been deployed to the following test networks:
 
-- **Rinkeby:** [`TBD`]()
-- **Kovan:** [`TBD`]()
-- **Ropsten:** [`TBD`]()
-- **Goerli:** [`TBD`]()
+- **Rinkeby:** [`0x886c0707aa72190Fe9fEB4B7Ca579e4ebA659423`](https://rinkeby.etherscan.io/address/0x886c0707aa72190Fe9fEB4B7Ca579e4ebA659423)
+- **Kovan:** [`0x886c0707aa72190Fe9fEB4B7Ca579e4ebA659423`](https://kovan.etherscan.io/address/0x886c0707aa72190Fe9fEB4B7Ca579e4ebA659423)
+- **Ropsten:** [`0x886c0707aa72190Fe9fEB4B7Ca579e4ebA659423`](https://ropsten.etherscan.io/address/0x886c0707aa72190Fe9fEB4B7Ca579e4ebA659423)
+- **Goerli:** [`0x886c0707aa72190Fe9fEB4B7Ca579e4ebA659423`](https://goerli.etherscan.io/address/0x886c0707aa72190Fe9fEB4B7Ca579e4ebA659423)
 
 ### Examples
 
-- _Example 1:_ ETH distribution [`0x7bb617dac7baf27bd56625a46ad7777dafcac54070c3c4adbfaee8b4018ab46d`](https://rinkeby.etherscan.io/tx/0x7bb617dac7baf27bd56625a46ad7777dafcac54070c3c4adbfaee8b4018ab46d)
+- _Example 1:_ ETH distribution [`0x79e15e0c516a059965bd6e7e184d602a653b0cbb1d742136bc815ceef6352fe3`](https://rinkeby.etherscan.io/tx/0x79e15e0c516a059965bd6e7e184d602a653b0cbb1d742136bc815ceef6352fe3)
   - Input tuple data `batch`: `[[["0x9F3f11d72d96910df008Cfe3aBA40F361D2EED03",1],["0x3854Ca47Abc62A3771fE06ab45622A42C4A438Cf",2]]]`
-- _Example 2:_ ERC-20 token distribution [`0x6360dad13b513a0980f631445d03bc066d8c561e9d66e58a75569e245ddceafe`](https://rinkeby.etherscan.io/tx/0x6360dad13b513a0980f631445d03bc066d8c561e9d66e58a75569e245ddceafe)
+- _Example 2:_ ERC-20 token distribution [`0xae3196edbbaddd0b185e569006747a41dbd01cf8eb350365a2bec0daa43f16e5`](https://rinkeby.etherscan.io/tx/0xae3196edbbaddd0b185e569006747a41dbd01cf8eb350365a2bec0daa43f16e5)
   - Input `token` address: `0x6A9865aDE2B6207dAAC49f8bCba9705dEB0B0e6D`
   - Input tuple data `batch`: `[[["0x9F3f11d72d96910df008Cfe3aBA40F361D2EED03",50],["0x3854Ca47Abc62A3771fE06ab45622A42C4A438Cf",50]]]`
