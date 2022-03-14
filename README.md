@@ -1,6 +1,6 @@
 # Batch Distributor
 
-[![build status](https://github.com/pcaversaccio/batch-distributor/actions/workflows/test-contracts.yml/badge.svg)](./actions)
+[![build status](https://github.com/pcaversaccio/batch-distributor/actions/workflows/test-contracts.yml/badge.svg)](https://github.com/pcaversaccio/batch-distributor/actions)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
 ## Installation
