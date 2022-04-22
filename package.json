@@ -64,6 +64,8 @@
     "deploy:autobahn": "npx hardhat run --network autobahn scripts/deploy.ts",
     "deploy:spark": "npx hardhat run --network spark scripts/deploy.ts",
     "deploy:fuse": "npx hardhat run --network fuse scripts/deploy.ts",
+    "deploy:cronostestnet": "npx hardhat run --network cronosTestnet scripts/deploy.ts",
+    "deploy:cronosmain": "npx hardhat run --network cronosMain scripts/deploy.ts",
     "prettier:check": "prettier -c **/*.{js,ts,md,sol}",
     "prettier:fix": "prettier --write **/*.{js,ts,md,sol}",
     "solhint:check": "npx solhint 'contracts/**/*.sol'",

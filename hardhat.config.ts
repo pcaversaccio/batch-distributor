@@ -220,6 +220,16 @@ const config: HardhatUserConfig = {
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
+    cronosTestnet: {
+      url: process.env.CRONOS_TESTNET_URL || "",
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
+    cronosMain: {
+      url: process.env.CRONOS_MAINNET_URL || "",
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
   },
   xdeploy: {
     contract: "BatchDistributor",
