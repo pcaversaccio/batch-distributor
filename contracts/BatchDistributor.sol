@@ -1,8 +1,14 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.9;
+pragma solidity 0.8.13;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+
+/**
+ * @dev Error that occurs when transferring ether has failed.
+ * @param emitter The contract that emits the error.
+ */
+error EtherTransferFail(address emitter);
 
 /**
  * @title Native and ERC-20 Token Batch Distributor
@@ -55,14 +61,14 @@ contract BatchDistributor {
             (bool sent, ) = batch.txns[i].recipient.call{
                 value: batch.txns[i].amount
             }("");
-            require(sent, "Failed to send ether");
+            if (!sent) revert EtherTransferFail(address(this));
         }
 
         uint256 balance = address(this).balance;
         if (balance != 0) {
             // solhint-disable-next-line avoid-low-level-calls
             (bool refunded, ) = payable(msg.sender).call{value: balance}("");
-            require(refunded, "Failed to refund ether");
+            if (!refunded) revert EtherTransferFail(address(this));
         }
     }
 
