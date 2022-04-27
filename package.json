@@ -11,9 +11,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/pcaversaccio/batch-distributor"
+    "url": "git+https://github.com/pcaversaccio/batch-distributor.git"
   },
-  "bug": {
+  "homepage": "https://github.com/pcaversaccio/batch-distributor#readme",
+  "bugs": {
     "url": "https://github.com/pcaversaccio/batch-distributor/issues"
   },
   "author": "0x6d61646520666f722074686520776f726c6421",
@@ -66,8 +67,8 @@
     "deploy:fuse": "npx hardhat run --network fuse scripts/deploy.ts",
     "deploy:cronostestnet": "npx hardhat run --network cronosTestnet scripts/deploy.ts",
     "deploy:cronosmain": "npx hardhat run --network cronosMain scripts/deploy.ts",
-    "prettier:check": "prettier -c **/*.{js,ts,md,sol}",
-    "prettier:fix": "prettier --write **/*.{js,ts,md,sol}",
+    "prettier:check": "prettier -c **/*.{js,ts,md,sol,json,yml}",
+    "prettier:fix": "prettier -w **/*.{js,ts,md,sol,json,yml}",
     "solhint:check": "npx solhint 'contracts/**/*.sol'",
     "solhint:fix": "npx solhint 'contracts/**/*.sol' --fix",
     "lint:check": "yarn prettier:check && yarn solhint:check && npx eslint **/*.{js,ts}",
