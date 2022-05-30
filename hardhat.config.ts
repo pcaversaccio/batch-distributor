@@ -14,7 +14,7 @@ import "hardhat-abi-exporter";
 
 dotenv.config();
 
-task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
+task("accounts", "Prints the list of accounts", async (_, hre) => {
   const accounts = await hre.ethers.getSigners();
 
   for (const account of accounts) {
@@ -25,7 +25,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 task(
   "balances",
   "Prints the list of accounts and their balances",
-  async (args, hre) => {
+  async (_, hre) => {
     const accounts = await hre.ethers.getSigners();
 
     for (const account of accounts) {
@@ -51,9 +51,22 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       initialBaseFeePerGas: 0,
+      chainId: 31337,
+      forking: {
+        url: process.env.ETH_MAINNET_URL || "",
+        // The Hardhat network will by default fork from the latest mainnet block
+        // To pin the block number, specify it below
+        // You will need access to a node with archival data for this to work!
+        // blockNumber: 14743877,
+        // If you want to do some forking, set `enabled` to true
+        enabled: false,
+      },
     },
     localhost: {
       url: "http://127.0.0.1:8545",
+    },
+    "truffle-dashboard": {
+      url: "http://localhost:24012/rpc",
     },
     rinkeby: {
       url: process.env.ETH_RINKEBY_TESTNET_URL || "",
@@ -72,6 +85,11 @@ const config: HardhatUserConfig = {
     },
     goerli: {
       url: process.env.ETH_GOERLI_TESTNET_URL || "",
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
+    sepolia: {
+      url: process.env.ETH_SEPOLIA_TESTNET_URL || "",
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
@@ -268,12 +286,13 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      // For Rinkeby, Ropsten, Kovan, Goerli, Mainnet
+      // For Mainnet, Ropsten, Rinkeby, Goerli, Kovan, Sepolia
       mainnet: process.env.ETHERSCAN_API_KEY,
       ropsten: process.env.ETHERSCAN_API_KEY,
       rinkeby: process.env.ETHERSCAN_API_KEY,
       goerli: process.env.ETHERSCAN_API_KEY,
       kovan: process.env.ETHERSCAN_API_KEY,
+      sepolia: process.env.ETHERSCAN_API_KEY,
       // For BSC testnet & mainnet
       bsc: process.env.BSC_API_KEY,
       bscTestnet: process.env.BSC_API_KEY,
