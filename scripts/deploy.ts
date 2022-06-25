@@ -8,10 +8,10 @@ async function main() {
 
   console.log("BatchDistributor deployed to:", contract.address);
 
-  await hre.tenderly.verify({
-    name: "BatchDistributor",
-    address: contract.address,
-  });
+  // await hre.tenderly.verify({
+  //   name: "BatchDistributor",
+  //   address: contract.address,
+  // });
 }
 
 main().catch((error) => {
