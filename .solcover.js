@@ -1,3 +1,3 @@
 module.exports = {
-  skipFiles: ["Create2DeployerLocal.sol", "mocks/", "Create2DeployerLocal.sol"],
+  skipFiles: ["Create2DeployerLocal.sol", "mocks/"],
 };
