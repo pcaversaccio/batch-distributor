@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import "@nomiclabs/hardhat-ethers";
-import { Contract } from "ethers";
+import { Contract, Wallet } from "ethers";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -279,7 +279,7 @@ describe("Distributor Contract", function () {
       });
     });
 
-    describe("Safe Transfer from owner", function () {
+    describe("Safe Transfer from Owner", function () {
       it("Reverts if total balance overflows uint256", async function () {
         const batch = {
           txns: [
@@ -326,7 +326,7 @@ describe("Distributor Contract", function () {
       });
     });
 
-    describe("Transfer to recipient", function () {
+    describe("Transfer to Recipient", function () {
       it("Transfers token to the recipient address given enough allowance", async function () {
         const batch = {
           txns: [
@@ -423,7 +423,7 @@ describe("Distributor Contract", function () {
       });
     });
 
-    describe("Safe Transfer from owner", function () {
+    describe("Safe Transfer from Owner", function () {
       it("Continues if any parameter is zero", async function () {
         const batch = {
           txns: [
@@ -440,7 +440,7 @@ describe("Distributor Contract", function () {
       });
     });
 
-    describe("Transfer to recipient", function () {
+    describe("Transfer to Recipient", function () {
       it("Transfers token to the recipient address given enough allowance", async function () {
         const batch = {
           txns: [
