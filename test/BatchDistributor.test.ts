@@ -231,7 +231,8 @@ describe("Distributor Contract", function () {
         value: txAmount,
       };
 
-      await expect(distributor.distributeEther(
+      await expect(
+        distributor.distributeEther(
           { txns: [{ recipient: erc20.address, amount: txAmount.toString() }] },
           overrides
         )
