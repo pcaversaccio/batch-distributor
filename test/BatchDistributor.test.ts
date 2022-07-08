@@ -231,12 +231,13 @@ describe("Distributor Contract", function () {
         value: txAmount,
       };
 
-      await expect(
-        distributor.distributeEther(
+      await expect(distributor.distributeEther(
           { txns: [{ recipient: erc20.address, amount: txAmount.toString() }] },
           overrides
         )
-      ).to.be.revertedWithCustomError(distributor, "EtherTransferFail");
+      )
+        .to.be.revertedWithCustomError(distributor, "EtherTransferFail")
+        .withArgs(distributor.address);
     });
   });
 
@@ -254,7 +255,7 @@ describe("Distributor Contract", function () {
 
         await expect(
           distributor.distributeToken(erc20.address, batch)
-        ).to.to.be.revertedWith("ERC20: insufficient allowance");
+        ).to.be.revertedWith("ERC20: insufficient allowance");
       });
 
       it("Keeps any unspent allowance", async function () {
@@ -266,7 +267,7 @@ describe("Distributor Contract", function () {
         };
 
         // set allowance for distributor
-        await expect(erc20.approve(distributor.address, 10000)).to.be.ok;
+        expect(await erc20.approve(distributor.address, 10000)).to.be.ok;
 
         // make transactions
         expect(await distributor.distributeToken(erc20.address, batch)).to.be
@@ -321,7 +322,7 @@ describe("Distributor Contract", function () {
         await erc20.approve(distributor.address, 5000);
 
         // attempt to make transaction
-        await expect(distributor.distributeToken(erc20.address, batch)).to.be
+        expect(await distributor.distributeToken(erc20.address, batch)).to.be
           .ok;
       });
     });
@@ -410,7 +411,7 @@ describe("Distributor Contract", function () {
         };
 
         // set allowance for distributor
-        await expect(erc20.approve(distributor.address, 10000)).to.be.ok;
+        expect(await erc20.approve(distributor.address, 10000)).to.be.ok;
 
         // make transactions
         expect(await distributor.distributeToken(erc20.address, batch)).to.be
@@ -435,7 +436,7 @@ describe("Distributor Contract", function () {
         await erc20.approve(distributor.address, 5000);
 
         // attempt to make transaction
-        await expect(distributor.distributeToken(erc20.address, batch)).to.be
+        expect(await distributor.distributeToken(erc20.address, batch)).to.be
           .ok;
       });
     });
@@ -588,7 +589,7 @@ describe("Distributor Contract", function () {
       }
 
       await erc20.approve(distributor.address, transactionCount);
-      await expect(distributor.distributeToken(erc20.address, batch)).to.be.ok;
+      expect(await distributor.distributeToken(erc20.address, batch)).to.be.ok;
     }).timeout(40000);
 
     it("Throws when transferring ERC20 to a large number of addresses", async function () {
