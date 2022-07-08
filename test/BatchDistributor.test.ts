@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import "@nomiclabs/hardhat-ethers";
-import { Contract, Wallet } from "ethers";
+import { Contract } from "ethers";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -69,10 +69,6 @@ describe("Distributor Contract", function () {
     it("Transfers ETH to the given address", async function () {
       const txAmount = ethers.utils.parseEther("5.0");
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const initialSenderBalance = await ethers.provider.getBalance(
-        sender.address
-      );
       const initialRecipientBalance = await ethers.provider.getBalance(
         addr1.address
       );
@@ -87,10 +83,6 @@ describe("Distributor Contract", function () {
 
       await distributor.distributeEther(batch, overrides);
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const finalSenderBalance = await ethers.provider.getBalance(
-        sender.address
-      );
       const finalRecipientBalance = await ethers.provider.getBalance(
         addr1.address
       );
@@ -128,10 +120,6 @@ describe("Distributor Contract", function () {
 
       await distributor.distributeEther(batch, overrides);
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const finalSenderBalance = await ethers.provider.getBalance(
-        sender.address
-      );
       const finalRecipient1Balance = await ethers.provider.getBalance(
         addr1.address
       );
@@ -198,11 +186,6 @@ describe("Distributor Contract", function () {
       const fundAmount = ethers.utils.parseEther("20.0");
       const txAmount = ethers.utils.parseEther("5.0");
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const initialSenderBalance = await ethers.provider.getBalance(
-        sender.address
-      );
-
       const overrides = {
         value: fundAmount,
         gasLimit: 10,
@@ -222,11 +205,6 @@ describe("Distributor Contract", function () {
       const fundAmount = ethers.utils.parseEther("20.0");
       const txAmount = ethers.utils.parseEther("5.0");
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const initialSenderBalance = await ethers.provider.getBalance(
-        sender.address
-      );
-
       const overrides = {
         value: fundAmount,
         gasLimit: 25000,
@@ -240,6 +218,25 @@ describe("Distributor Contract", function () {
         ],
         /Transaction ran out of gas/
       );
+    });
+
+    it("Reverts if funds are sent to a non-payable address", async function () {
+      const ERC20 = await ethers.getContractFactory("ERC20Mock");
+      erc20 = await ERC20.deploy();
+      await erc20.deployed();
+
+      const txAmount = ethers.utils.parseEther("5.0");
+
+      const overrides = {
+        value: txAmount,
+      };
+
+      await expect(
+        distributor.distributeEther(
+          { txns: [{ recipient: erc20.address, amount: txAmount.toString() }] },
+          overrides
+        )
+      ).to.be.revertedWithCustomError(distributor, "EtherTransferFail");
     });
   });
 
@@ -292,11 +289,9 @@ describe("Distributor Contract", function () {
         };
 
         // attempt to make transaction
-        await expectThrowsAsync(
-          distributor.distributeToken,
-          [erc20.address, batch],
-          /reverted with panic code 0x11/
-        );
+        await expect(
+          distributor.distributeToken(erc20.address, batch)
+        ).to.be.revertedWithPanic(0x11);
       });
 
       it("Reverts if any parameter is negative", async function () {
