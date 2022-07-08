@@ -292,9 +292,11 @@ describe("Distributor Contract", function () {
         };
 
         // attempt to make transaction
-        await expect(
-          distributor.distributeToken(erc20.address, batch)
-        ).to.be.revertedWith("reverted with panic code 0x11");
+        await expectThrowsAsync(
+          distributor.distributeToken,
+          [erc20.address, batch],
+          /reverted with panic code 0x11/
+        );
       });
 
       it("Reverts if any parameter is negative", async function () {
@@ -306,8 +308,11 @@ describe("Distributor Contract", function () {
         };
 
         // attempt to make transaction
-        await expect(distributor.distributeToken(erc20.address, batch)).to.be
-          .reverted;
+        await expectThrowsAsync(
+          distributor.distributeToken,
+          [erc20.address, batch],
+          /value out-of-bounds/
+        );
       });
 
       it("Continues if any parameter is zero", async function () {
