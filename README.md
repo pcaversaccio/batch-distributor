@@ -1,7 +1,7 @@
 # Batch Distributor
 
 [![Test smart contracts](https://github.com/pcaversaccio/batch-distributor/actions/workflows/test-contracts.yml/badge.svg)](https://github.com/pcaversaccio/batch-distributor/actions/workflows/test-contracts.yml)
-![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Installation
 
