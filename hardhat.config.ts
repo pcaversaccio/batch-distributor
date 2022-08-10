@@ -146,6 +146,11 @@ const config: HardhatUserConfig = {
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
+    arbitrumNova: {
+      url: process.env.ARBITRUM_NOVA_URL || "",
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
     mumbai: {
       chainId: 80001,
       url: process.env.POLYGON_TESTNET_URL || "",
@@ -376,8 +381,10 @@ const config: HardhatUserConfig = {
       // For Polygon testnet & mainnet
       polygon: process.env.POLYGON_API_KEY || "",
       polygonMumbai: process.env.POLYGON_API_KEY || "",
-      // For Arbitrum testnet & mainnet
+      // For Arbitrum testnet & mainnets; we use the same
+      // string placeholder for Arbitrum Nova as for xdai and sokol
       arbitrumOne: process.env.ARBITRUM_API_KEY || "",
+      arbitrumNova: "wagmi",
       arbitrumTestnet: process.env.ARBITRUM_API_KEY || "",
       // For Avalanche testnet & mainnet
       avalanche: process.env.AVALANCHE_API_KEY || "",
@@ -471,8 +478,24 @@ const config: HardhatUserConfig = {
         network: "bobaTestnet",
         chainId: 28,
         urls: {
-          apiURL: "https://evm.evmos.dev/api",
-          browserURL: "https://api-testnet.bobascan.com/api",
+          apiURL: "https://api-testnet.bobascan.com/api",
+          browserURL: "https://testnet.bobascan.com",
+        },
+      },
+      {
+        network: "arbitrumNova",
+        chainId: 42170,
+        urls: {
+          apiURL: "https://nova-explorer.arbitrum.io/api",
+          browserURL: "https://nova-explorer.arbitrum.io",
+        },
+      },
+      {
+        network: "arbitrumTestnet",
+        chainId: 421613,
+        urls: {
+          apiURL: "https://goerli-rollup-explorer.arbitrum.io/api",
+          browserURL: "https://goerli-rollup-explorer.arbitrum.io",
         },
       },
     ],
