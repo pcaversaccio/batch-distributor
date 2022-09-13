@@ -35,7 +35,7 @@ contract BatchDistributor {
      * if you declare a constructor `payable`.
      *
      * For more in-depth information see here:
-     * https://forum.openzeppelin.com/t/a-collection-of-gas-optimisation-tricks/19966/5
+     * https://forum.openzeppelin.com/t/a-collection-of-gas-optimisation-tricks/19966/5.
      */
     constructor() payable {}
 
