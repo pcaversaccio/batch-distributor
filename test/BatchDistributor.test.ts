@@ -26,7 +26,7 @@ const expectThrowsAsync = async (
 };
 
 describe("Distributor Contract", function () {
-  let WageDistributor;
+  let BatchDistributor;
 
   let distributor: Contract;
   let erc20: Contract;
@@ -60,9 +60,9 @@ describe("Distributor Contract", function () {
 
   beforeEach(async function () {
     await ethers.provider.send("hardhat_reset", []);
-    WageDistributor = await ethers.getContractFactory("BatchDistributor");
+    BatchDistributor = await ethers.getContractFactory("BatchDistributor");
     [sender, addr1, addr2, addr3, addr4] = await ethers.getSigners();
-    distributor = await WageDistributor.deploy();
+    distributor = await BatchDistributor.deploy();
   });
 
   describe("ETH Transactions", function () {
