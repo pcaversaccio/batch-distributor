@@ -18,7 +18,6 @@ error EtherTransferFail(address emitter);
  * @dev Since we use nested struct objects, we rely on the ABI coder v2.
  * The ABI coder v2 is activated by default since Solidity `v0.8.0`.
  */
-
 contract BatchDistributor {
     using SafeERC20 for IERC20;
 
@@ -47,8 +46,10 @@ contract BatchDistributor {
     constructor() payable {}
 
     /**
-     * @dev In the event that excessive ether is sent, the residual amount is
-     * returned back to the `msg.sender`.
+     * @dev Distributes ether, denominated in wei, to a predefined batch
+     * of recipient addresses.
+     * @notice In the event that excessive ether is sent, the residual
+     * amount is returned back to the `msg.sender`.
      * @param batch Nested struct object that contains an array of tuples that
      * contain each a recipient address & ether amount in wei.
      */
@@ -80,7 +81,14 @@ contract BatchDistributor {
     }
 
     /**
-     * @param token ERC-20 token contract address
+     * @dev Distributes ERC-20 tokens, denominated in their corresponding
+     * lowest unit, to a predefined batch of recipient addresses.
+     * @notice To deal with (potentially) non-compliant ERC-20 tokens that
+     * do have no return value, we use the `SafeERC20` library for external calls.
+     * Note: Since we cast the token address into the official ERC-20 interface,
+     * the use of non-compliant ERC-20 tokens is prevented by design. Nevertheless,
+     * we keep this guardrail for security reasons.
+     * @param token ERC-20 token contract address.
      * @param batch Nested struct object that contains an array of tuples that
      * contain each a recipient address & token amount.
      */
@@ -113,6 +121,11 @@ contract BatchDistributor {
         }
     }
 
+    /**
+     * @dev Performs an unchecked incrementation by 1 to save gas.
+     * @param i The 32-byte increment parameter `i`.
+     * @return The unchecked increment of the parameter `i`.
+     */
     function _uncheckedInc(uint256 i) private pure returns (uint256) {
         /**
          * @dev An array can't have a total length
