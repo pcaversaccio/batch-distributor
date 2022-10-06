@@ -22,12 +22,19 @@ error EtherTransferFail(address emitter);
 contract BatchDistributor {
     using SafeERC20 for IERC20;
 
-    struct Batch {
-        Transaction[] txns;
-    }
+    /**
+     * @dev Transaction struct for the transaction payload.
+     */
     struct Transaction {
         address payable recipient;
         uint256 amount;
+    }
+
+    /**
+     * @dev Batch struct for the array of transactions.
+     */
+    struct Batch {
+        Transaction[] txns;
     }
 
     /**
