@@ -1,8 +1,7 @@
 import hre, { ethers } from "hardhat";
 
 async function main() {
-  const Contract = await ethers.getContractFactory("BatchDistributor");
-  const contract = await Contract.deploy();
+  const contract = await ethers.deployContract("BatchDistributor");
 
   await contract.deployed();
 
