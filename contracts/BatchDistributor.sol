@@ -74,6 +74,10 @@ contract BatchDistributor {
 
         uint256 balance = address(this).balance;
         if (balance != 0) {
+            /**
+             * @dev Any wei amount previously forced into this contract (e.g. by
+             * using the `SELFDESTRUCT` opcode) will be part of the refund transaction.
+             */
             // solhint-disable-next-line avoid-low-level-calls
             (bool refunded, ) = payable(msg.sender).call{value: balance}("");
             if (!refunded) revert EtherTransferFail(address(this));
