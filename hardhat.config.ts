@@ -641,7 +641,6 @@ const config: HardhatUserConfig = {
           browserURL: "https://goerli.basescan.org",
         },
       },
-
       {
         network: "mantleTestnet",
         chainId: 5001,
