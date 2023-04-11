@@ -57,15 +57,13 @@ The parameter `batch` is a nested struct object that contains an array of tuples
 
 The smart contract [`BatchDistributor.sol`](./contracts/BatchDistributor.sol) has been deployed to the following test networks:
 
-- **Rinkeby:** [`0x886c0707aa72190Fe9fEB4B7Ca579e4ebA659423`](https://rinkeby.etherscan.io/address/0x886c0707aa72190Fe9fEB4B7Ca579e4ebA659423)
-- **Kovan:** [`0x886c0707aa72190Fe9fEB4B7Ca579e4ebA659423`](https://kovan.etherscan.io/address/0x886c0707aa72190Fe9fEB4B7Ca579e4ebA659423)
-- **Ropsten:** [`0x886c0707aa72190Fe9fEB4B7Ca579e4ebA659423`](https://ropsten.etherscan.io/address/0x886c0707aa72190Fe9fEB4B7Ca579e4ebA659423)
-- **Goerli:** [`0x886c0707aa72190Fe9fEB4B7Ca579e4ebA659423`](https://goerli.etherscan.io/address/0x886c0707aa72190Fe9fEB4B7Ca579e4ebA659423)
+- **Goerli:** [`0xBFe76cA9bAbF3566A89e215782d97ADb87Fa55C6`](https://goerli.etherscan.io/address/0xBFe76cA9bAbF3566A89e215782d97ADb87Fa55C6)
+- **Sepolia:** [`0xBFe76cA9bAbF3566A89e215782d97ADb87Fa55C6`](https://sepolia.etherscan.io/address/0xBFe76cA9bAbF3566A89e215782d97ADb87Fa55C6)
 
 ### Examples
 
-- _Example 1:_ ETH distribution [`0x79e15e0c516a059965bd6e7e184d602a653b0cbb1d742136bc815ceef6352fe3`](https://rinkeby.etherscan.io/tx/0x79e15e0c516a059965bd6e7e184d602a653b0cbb1d742136bc815ceef6352fe3)
+- _Example 1:_ ETH distribution [`0x88373d0c99927a70f81d474b444848dd83e04b0d7100a018152a38aa8fab0b8b`](https://goerli.etherscan.io/tx/0x88373d0c99927a70f81d474b444848dd83e04b0d7100a018152a38aa8fab0b8b)
   - Input tuple data `batch`: `[[["0x9F3f11d72d96910df008Cfe3aBA40F361D2EED03",1],["0x3854Ca47Abc62A3771fE06ab45622A42C4A438Cf",2]]]`
-- _Example 2:_ ERC-20 token distribution [`0xae3196edbbaddd0b185e569006747a41dbd01cf8eb350365a2bec0daa43f16e5`](https://rinkeby.etherscan.io/tx/0xae3196edbbaddd0b185e569006747a41dbd01cf8eb350365a2bec0daa43f16e5)
-  - Input `token` address: `0x6A9865aDE2B6207dAAC49f8bCba9705dEB0B0e6D`
+- _Example 2:_ ERC-20 token distribution [`0x25bec5c3e0ae70acef4457ced251ab92c6414e2018a868fa4c6e5a1e44428395`](https://goerli.etherscan.io/tx/0x25bec5c3e0ae70acef4457ced251ab92c6414e2018a868fa4c6e5a1e44428395)
+  - Input `token` address: [`0x11fE4B6AE13d2a6055C8D9cF65c55bac32B5d844`](https://goerli.etherscan.io/address/0x11fE4B6AE13d2a6055C8D9cF65c55bac32B5d844)
   - Input tuple data `batch`: `[[["0x9F3f11d72d96910df008Cfe3aBA40F361D2EED03",50],["0x3854Ca47Abc62A3771fE06ab45622A42C4A438Cf",50]]]`
