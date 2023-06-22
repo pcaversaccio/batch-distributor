@@ -174,7 +174,7 @@ describe("Distributor Contract", function () {
         sender.address
       );
 
-      expect(finalSenderBalance).to.below(initialSenderBalance.sub(txAmount));
+      expect(finalSenderBalance).to.eq(initialSenderBalance.sub(txAmount));
       expect(finalSenderBalance).to.above(initialSenderBalance.sub(fundAmount));
       expect(finalSenderBalance).to.above(
         initialSenderBalance.sub(txAmount).sub(txAmount)
