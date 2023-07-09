@@ -40,13 +40,13 @@ async function distributeEther() {
 
   const tx = await Contract.distributeEther(
     { txns: txns },
-    { value: msgValue }
+    { value: msgValue },
   );
   console.log("The transaction hash is:", tx.hash);
   const receipt = await tx.wait();
   console.log(
     "The transaction returned the following transaction receipt:\n",
-    receipt
+    receipt,
   );
 }
 
