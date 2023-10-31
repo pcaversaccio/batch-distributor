@@ -64,7 +64,7 @@ contract BatchDistributor {
          * @dev If a variable is not set/initialised, it is assumed to have
          * the default value. The default value for the `uint` types is 0.
          */
-        for (uint256 i; i < length; i = _uncheckedInc(i)) {
+        for (uint256 i; i < length; ++i) {
             // solhint-disable-next-line avoid-low-level-calls
             (bool sent, ) = batch.txns[i].recipient.call{
                 value: batch.txns[i].amount
@@ -108,7 +108,7 @@ contract BatchDistributor {
          * the default value. The default value for the `uint` types is 0.
          */
         uint256 total;
-        for (uint256 i; i < length; i = _uncheckedInc(i)) {
+        for (uint256 i; i < length; ++i) {
             total += batch.txns[i].amount;
         }
 
@@ -120,23 +120,8 @@ contract BatchDistributor {
          */
         token.safeTransferFrom(msg.sender, address(this), total);
 
-        for (uint256 i; i < length; i = _uncheckedInc(i)) {
+        for (uint256 i; i < length; ++i) {
             token.safeTransfer(batch.txns[i].recipient, batch.txns[i].amount);
-        }
-    }
-
-    /**
-     * @dev Performs an unchecked incrementation by 1 to save gas.
-     * @param i The 32-byte increment parameter `i`.
-     * @return The unchecked increment of the parameter `i`.
-     */
-    function _uncheckedInc(uint256 i) private pure returns (uint256) {
-        /**
-         * @dev An array can't have a total length
-         * larger than the max uint256 value.
-         */
-        unchecked {
-            return i + 1;
         }
     }
 }
