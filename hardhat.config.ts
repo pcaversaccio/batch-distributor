@@ -816,7 +816,7 @@ const config: HardhatUserConfig = {
     runOnCompile: true,
     clear: true,
     flat: false,
-    only: [],
+    only: ["BatchDistributor"],
     spacing: 2,
     pretty: true,
   },
