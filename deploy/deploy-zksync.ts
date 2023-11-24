@@ -19,7 +19,7 @@ export default async function main(hre: HardhatRuntimeEnvironment) {
   await contract.deployed();
   const contractAddress = contract.address;
 
-  console.log("BatchDistributor deployed to:", contract.address);
+  console.log("BatchDistributor deployed to:", contractAddress);
 
   await delay(30000); // Wait for 30 seconds before verifying the contract
 

@@ -11,7 +11,7 @@ async function main() {
   await contract.deployed();
   const contractAddress = contract.address;
 
-  console.log("BatchDistributor deployed to:", contract.address);
+  console.log("BatchDistributor deployed to:", contractAddress);
 
   await delay(30000); // Wait for 30 seconds before verifying the contract
 
@@ -21,7 +21,7 @@ async function main() {
 
   // await hre.tenderly.verify({
   //   name: "BatchDistributor",
-  //   address: contract.address,
+  //   address: contractAddress,
   // });
 }
 
