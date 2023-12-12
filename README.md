@@ -1,22 +1,22 @@
 # Batch Distributor
 
-[![Test smart contracts](https://github.com/pcaversaccio/batch-distributor/actions/workflows/test-contracts.yml/badge.svg)](https://github.com/pcaversaccio/batch-distributor/actions/workflows/test-contracts.yml)
+[![🕵️‍♂️ Test smart contracts](https://github.com/pcaversaccio/batch-distributor/actions/workflows/test-contracts.yml/badge.svg)](https://github.com/pcaversaccio/batch-distributor/actions/workflows/test-contracts.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/license/mit/)
 
 ## Installation
 
-It is recommended to install [Yarn](https://classic.yarnpkg.com) through the `npm` package manager, which comes bundled with [Node.js](https://nodejs.org/en) when you install it on your system. It is recommended to use a Node.js version `>= 18.0.0`.
+It is recommended to install [`pnpm`](https://pnpm.io) through the `npm` package manager, which comes bundled with [Node.js](https://nodejs.org/en) when you install it on your system. It is recommended to use a Node.js version `>= 18.0.0`.
 
-Once you have `npm` installed, you can run the following both to install and upgrade Yarn:
+Once you have `npm` installed, you can run the following both to install and upgrade `pnpm`:
 
 ```console
-npm install --global yarn
+npm install -g pnpm
 ```
 
-After having installed Yarn, simply run:
+After having installed `pnpm`, simply run:
 
 ```console
-yarn install
+pnpm install
 ```
 
 ## Unit Tests
@@ -24,7 +24,7 @@ yarn install
 You can run the unit tests with
 
 ```console
-yarn test
+pnpm test
 ```
 
 ## Test Coverage
@@ -32,7 +32,7 @@ yarn test
 This repository implements a test coverage [plugin](https://github.com/sc-forks/solidity-coverage). Simply run:
 
 ```console
-yarn coverage
+pnpm coverage
 ```
 
 ## Implemented Functionalities
@@ -40,7 +40,7 @@ yarn coverage
 - **ETH Batch Transaction:** `distributeEther(batch (tuple))`
 - **ERC20 Batch Transaction:** `distributeToken(token (address), batch (tuple))`
 
-The parameter `batch` is a nested struct object that contains an array of tuples that contain each a recipient address & ETH/token amount. Please ensure that the amount for the ETH transactions is given in `wei` (1 wei = 10<sup>-18</sup> ETH) and check the decimal digits for the ERC20 tokens.
+The parameter `batch` is a nested struct object that contains an array of tuples that contain each a recipient address & ETH/token amount. Please ensure that the amount for the ETH transactions is given in `wei` (1 wei = $10^{-18}$ ETH) and check the decimal digits for the ERC20 tokens.
 
 ```typescript
 {

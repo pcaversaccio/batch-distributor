@@ -1,6 +1,10 @@
 [
   "constructor() payable",
+  "error AddressEmptyCode(address)",
+  "error AddressInsufficientBalance(address)",
   "error EtherTransferFail(address)",
+  "error FailedInnerCall()",
+  "error SafeERC20FailedOperation(address)",
   "function distributeEther(tuple(tuple(address,uint256)[])) payable",
   "function distributeToken(address,tuple(tuple(address,uint256)[]))"
 ]

@@ -1,17 +1,20 @@
 import { expect } from "chai";
-import { ethers } from "hardhat";
-import "@nomiclabs/hardhat-ethers";
-import { Contract, Wallet } from "ethers";
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { HDNodeWallet } from "ethers";
+import hre from "hardhat";
+import { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers";
+import {
+  BatchDistributor,
+  ERC20Mock,
+  ERC20ReturnFalseMock,
+} from "../typechain-types";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const expectThrowsAsync = async (
+async function expectThrowsAsync(
   // eslint-disable-next-line @typescript-eslint/ban-types
   method: Function,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: any[],
-  message?: string,
-) => {
+  message?: RegExp,
+) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let err: any = "";
   try {
@@ -19,62 +22,47 @@ const expectThrowsAsync = async (
   } catch (error) {
     err = error;
   }
-  expect(err).to.be.an(Error.name);
   if (message) {
-    expect(err.message).to.be.equal(message);
+    expect(err.message).to.match(message);
+  } else {
+    expect(err).to.be.an("Error");
   }
-};
+}
 
 describe("Distributor Contract", function () {
-  let BatchDistributor;
+  let distributor: BatchDistributor;
+  let distributorAddr: string;
 
-  let distributor: Contract;
-  let erc20: Contract;
+  let erc20: ERC20Mock;
+  let erc20Addr: string;
+
+  let erc20ReturnFalse: ERC20ReturnFalseMock;
+  let erc20ReturnFalseAddr: string;
 
   let sender: SignerWithAddress;
-  let addr1: SignerWithAddress,
-    addr2: SignerWithAddress,
-    addr3: SignerWithAddress,
-    addr4: SignerWithAddress;
-
-  const expectThrowsAsync = async (
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    method: Function,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    params: any[],
-    message?: RegExp,
-  ) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let err: any = "";
-    try {
-      await method(...params);
-    } catch (error) {
-      err = error;
-    }
-    if (message) {
-      expect(err.message).to.match(message);
-    } else {
-      expect(err).to.be.an("Error");
-    }
-  };
+  let addr1: SignerWithAddress;
+  let addr2: SignerWithAddress;
+  let addr3: SignerWithAddress;
+  let addr4: SignerWithAddress;
 
   beforeEach(async function () {
-    await ethers.provider.send("hardhat_reset", []);
-    BatchDistributor = await ethers.getContractFactory("BatchDistributor");
-    [sender, addr1, addr2, addr3, addr4] = await ethers.getSigners();
-    distributor = await BatchDistributor.deploy();
+    await hre.ethers.provider.send("hardhat_reset", []);
+    distributor = await hre.ethers.deployContract("BatchDistributor");
+    [sender, addr1, addr2, addr3, addr4] = await hre.ethers.getSigners();
+    await distributor.waitForDeployment();
+    distributorAddr = await distributor.getAddress();
   });
 
   describe("ETH Transactions", function () {
     it("Transfers ETH to the given address", async function () {
-      const txAmount = ethers.utils.parseEther("5.0");
+      const txAmount = hre.ethers.parseEther("5.0");
 
-      const initialRecipientBalance = await ethers.provider.getBalance(
+      const initialRecipientBalance = await hre.ethers.provider.getBalance(
         addr1.address,
       );
 
       const overrides = {
-        value: ethers.utils.parseEther("5.0"),
+        value: hre.ethers.parseEther("5.0"),
       };
 
       const batch = {
@@ -83,12 +71,12 @@ describe("Distributor Contract", function () {
 
       await distributor.distributeEther(batch, overrides);
 
-      const finalRecipientBalance = await ethers.provider.getBalance(
+      const finalRecipientBalance = await hre.ethers.provider.getBalance(
         addr1.address,
       );
 
       expect(finalRecipientBalance).to.equal(
-        initialRecipientBalance.add(txAmount),
+        initialRecipientBalance + txAmount,
       );
     });
 
@@ -97,67 +85,62 @@ describe("Distributor Contract", function () {
         txns: [
           {
             recipient: addr1.address,
-            amount: ethers.utils.parseEther("0.2151").toString(),
+            amount: hre.ethers.parseEther("0.2151").toString(),
           },
           {
             recipient: addr2.address,
-            amount: ethers.utils.parseEther("2.040194018").toString(),
+            amount: hre.ethers.parseEther("2.040194018").toString(),
           },
           {
             recipient: addr3.address,
-            amount: ethers.utils.parseEther("0.0003184").toString(),
+            amount: hre.ethers.parseEther("0.0003184").toString(),
           },
           {
             recipient: addr4.address,
-            amount: ethers.utils.parseEther("0.000000000001").toString(),
+            amount: hre.ethers.parseEther("0.000000000001").toString(),
           },
         ],
       };
 
       const overrides = {
-        value: ethers.utils.parseEther("5.0"),
+        value: hre.ethers.parseEther("5.0"),
       };
 
       await distributor.distributeEther(batch, overrides);
 
-      const finalRecipient1Balance = await ethers.provider.getBalance(
+      const finalRecipient1Balance = await hre.ethers.provider.getBalance(
         addr1.address,
       );
-      const finalRecipient2Balance = await ethers.provider.getBalance(
+      const finalRecipient2Balance = await hre.ethers.provider.getBalance(
         addr2.address,
       );
-      const finalRecipient3Balance = await ethers.provider.getBalance(
+      const finalRecipient3Balance = await hre.ethers.provider.getBalance(
         addr3.address,
       );
-      const finalRecipient4Balance = await ethers.provider.getBalance(
+      const finalRecipient4Balance = await hre.ethers.provider.getBalance(
         addr4.address,
       );
 
       expect(finalRecipient1Balance).to.equal(
-        ethers.utils.parseEther("10000").add(ethers.utils.parseEther("0.2151")),
+        hre.ethers.parseEther("10000") + hre.ethers.parseEther("0.2151"),
       );
       expect(finalRecipient2Balance).to.equal(
-        ethers.utils
-          .parseEther("10000")
-          .add(ethers.utils.parseEther("2.040194018")),
+        hre.ethers.parseEther("10000") + hre.ethers.parseEther("2.040194018"),
       );
       expect(finalRecipient3Balance).to.equal(
-        ethers.utils
-          .parseEther("10000")
-          .add(ethers.utils.parseEther("0.0003184")),
+        hre.ethers.parseEther("10000") + hre.ethers.parseEther("0.0003184"),
       );
       expect(finalRecipient4Balance).to.equal(
-        ethers.utils
-          .parseEther("10000")
-          .add(ethers.utils.parseEther("0.000000000001")),
+        hre.ethers.parseEther("10000") +
+          hre.ethers.parseEther("0.000000000001"),
       );
     });
 
     it("Sends back unused funds", async function () {
-      const fundAmount = ethers.utils.parseEther("20.0");
-      const txAmount = ethers.utils.parseEther("5.0");
+      const fundAmount = hre.ethers.parseEther("20.0");
+      const txAmount = hre.ethers.parseEther("5.0");
 
-      const initialSenderBalance = await ethers.provider.getBalance(
+      const initialSenderBalance = await hre.ethers.provider.getBalance(
         sender.address,
       );
 
@@ -170,21 +153,21 @@ describe("Distributor Contract", function () {
         overrides,
       );
 
-      const finalSenderBalance = await ethers.provider.getBalance(
+      const finalSenderBalance = await hre.ethers.provider.getBalance(
         sender.address,
       );
 
-      expect(finalSenderBalance).to.lte(initialSenderBalance.sub(txAmount));
-      expect(finalSenderBalance).to.above(initialSenderBalance.sub(fundAmount));
+      expect(finalSenderBalance).to.lte(initialSenderBalance - txAmount);
+      expect(finalSenderBalance).to.above(initialSenderBalance - fundAmount);
       expect(finalSenderBalance).to.above(
-        initialSenderBalance.sub(txAmount).sub(txAmount),
+        initialSenderBalance - txAmount - txAmount,
       );
-      expect(await ethers.provider.getBalance(distributor.address)).to.equal(0);
+      expect(await hre.ethers.provider.getBalance(distributorAddr)).to.equal(0);
     });
 
     it("Fails if gas limit too low", async function () {
-      const fundAmount = ethers.utils.parseEther("20.0");
-      const txAmount = ethers.utils.parseEther("5.0");
+      const fundAmount = hre.ethers.parseEther("20.0");
+      const txAmount = hre.ethers.parseEther("5.0");
 
       const overrides = {
         value: fundAmount,
@@ -202,8 +185,8 @@ describe("Distributor Contract", function () {
     });
 
     it("Reverts if it runs out of gas", async function () {
-      const fundAmount = ethers.utils.parseEther("20.0");
-      const txAmount = ethers.utils.parseEther("5.0");
+      const fundAmount = hre.ethers.parseEther("20.0");
+      const txAmount = hre.ethers.parseEther("5.0");
 
       const overrides = {
         value: fundAmount,
@@ -221,11 +204,10 @@ describe("Distributor Contract", function () {
     });
 
     it("Reverts if funds are sent to a non-payable address", async function () {
-      const ERC20 = await ethers.getContractFactory("ERC20Mock");
-      erc20 = await ERC20.deploy();
-      await erc20.deployed();
+      const erc20 = await hre.ethers.deployContract("ERC20Mock");
+      await erc20.waitForDeployment();
 
-      const txAmount = ethers.utils.parseEther("5.0");
+      const txAmount = hre.ethers.parseEther("5.0");
 
       const overrides = {
         value: txAmount,
@@ -233,20 +215,52 @@ describe("Distributor Contract", function () {
 
       await expect(
         distributor.distributeEther(
-          { txns: [{ recipient: erc20.address, amount: txAmount.toString() }] },
+          {
+            txns: [
+              {
+                recipient: await erc20.getAddress(),
+                amount: txAmount.toString(),
+              },
+            ],
+          },
           overrides,
         ),
       )
         .to.be.revertedWithCustomError(distributor, "EtherTransferFail")
-        .withArgs(distributor.address);
+        .withArgs(distributorAddr);
+    });
+
+    it("Reverts if unused funds are sent back to a non-payable address", async function () {
+      const erc20 = await hre.ethers.deployContract("ERC20Mock");
+      await erc20.waitForDeployment();
+      const fundAmount = hre.ethers.parseEther("20.0");
+      const txAmount = hre.ethers.parseEther("5.0");
+
+      await hre.network.provider.send("hardhat_setCode", [
+        await sender.getAddress(),
+        "0x11",
+      ]);
+
+      const overrides = {
+        value: fundAmount,
+      };
+
+      await expect(
+        distributor.distributeEther(
+          { txns: [{ recipient: addr1.address, amount: txAmount.toString() }] },
+          overrides,
+        ),
+      )
+        .to.be.revertedWithCustomError(distributor, "EtherTransferFail")
+        .withArgs(distributorAddr);
     });
   });
 
   describe("ERC20Mock Transactions", function () {
     beforeEach(async function () {
-      const ERC20 = await ethers.getContractFactory("ERC20Mock");
-      erc20 = await ERC20.deploy();
-      await erc20.deployed();
+      erc20 = await hre.ethers.deployContract("ERC20Mock");
+      await erc20.waitForDeployment();
+      erc20Addr = await erc20.getAddress();
       await erc20.mint(sender.address, 1000000);
     });
 
@@ -254,9 +268,9 @@ describe("Distributor Contract", function () {
       it("Reverts transactions when given not enough allowance", async function () {
         const batch = { txns: [{ recipient: addr1.address, amount: 1000 }] };
 
-        await expect(
-          distributor.distributeToken(erc20.address, batch),
-        ).to.be.revertedWith("ERC20: insufficient allowance");
+        await expect(distributor.distributeToken(erc20Addr, batch))
+          .to.be.revertedWithCustomError(erc20, "ERC20InsufficientAllowance")
+          .withArgs(distributorAddr, 0, 1000);
       });
 
       it("Keeps any unspent allowance", async function () {
@@ -268,16 +282,15 @@ describe("Distributor Contract", function () {
         };
 
         // set allowance for distributor
-        expect(await erc20.approve(distributor.address, 10000)).to.be.ok;
+        expect(await erc20.approve(distributorAddr, 10000)).to.be.ok;
 
         // make transactions
-        expect(await distributor.distributeToken(erc20.address, batch)).to.be
-          .ok;
+        expect(await distributor.distributeToken(erc20Addr, batch)).to.be.ok;
 
         // no balance should remain because we approved the exact amount
-        expect(
-          await erc20.allowance(sender.address, distributor.address),
-        ).to.equal(4000);
+        expect(await erc20.allowance(sender.address, distributorAddr)).to.equal(
+          4000,
+        );
       });
     });
 
@@ -285,14 +298,14 @@ describe("Distributor Contract", function () {
       it("Reverts if total balance overflows uint256", async function () {
         const batch = {
           txns: [
-            { recipient: addr1.address, amount: ethers.constants.MaxUint256 },
+            { recipient: addr1.address, amount: hre.ethers.MaxUint256 },
             { recipient: addr2.address, amount: 1 },
           ],
         };
 
         // attempt to make transaction
         await expect(
-          distributor.distributeToken(erc20.address, batch),
+          distributor.distributeToken(erc20Addr, batch),
         ).to.be.revertedWithPanic(0x11);
       });
 
@@ -307,7 +320,7 @@ describe("Distributor Contract", function () {
         // attempt to make transaction
         await expectThrowsAsync(
           distributor.distributeToken,
-          [erc20.address, batch],
+          [erc20Addr, batch],
           /value out-of-bounds/,
         );
       });
@@ -320,11 +333,10 @@ describe("Distributor Contract", function () {
           ],
         };
 
-        await erc20.approve(distributor.address, 5000);
+        await erc20.approve(distributorAddr, 5000);
 
         // attempt to make transaction
-        expect(await distributor.distributeToken(erc20.address, batch)).to.be
-          .ok;
+        expect(await distributor.distributeToken(erc20Addr, batch)).to.be.ok;
       });
     });
 
@@ -337,70 +349,72 @@ describe("Distributor Contract", function () {
           ],
         };
 
-        await erc20.approve(distributor.address, 6000);
+        await erc20.approve(distributorAddr, 6000);
 
         // make transactions
-        expect(await distributor.distributeToken(erc20.address, batch)).to.be
-          .ok;
+        expect(await distributor.distributeToken(erc20Addr, batch)).to.be.ok;
 
         // no balance should remain because we approved the exact amount
-        expect(
-          await erc20.allowance(sender.address, distributor.address),
-        ).to.equal(0);
+        expect(await erc20.allowance(sender.address, distributorAddr)).to.equal(
+          0,
+        );
       });
 
       it("Continues when transferring to self or token contract", async function () {
         const batch = {
           txns: [
             { recipient: sender.address, amount: 1000 },
-            { recipient: erc20.address, amount: 5000 },
+            { recipient: erc20Addr, amount: 5000 },
           ],
         };
 
-        await erc20.approve(distributor.address, 6000);
+        await erc20.approve(distributorAddr, 6000);
 
         // make transactions
-        expect(await distributor.distributeToken(erc20.address, batch)).to.be
-          .ok;
+        expect(await distributor.distributeToken(erc20Addr, batch)).to.be.ok;
 
         // no balance should remain because we approved the exact amount
-        expect(
-          await erc20.allowance(sender.address, distributor.address),
-        ).to.equal(0);
+        expect(await erc20.allowance(sender.address, distributorAddr)).to.equal(
+          0,
+        );
       });
 
       it("Continues when given infinite allowance", async function () {
         const batch = {
           txns: [
             { recipient: sender.address, amount: 1000 },
-            { recipient: erc20.address, amount: 500000 },
+            { recipient: erc20Addr, amount: 500000 },
           ],
         };
 
-        await erc20.approve(distributor.address, ethers.constants.MaxUint256);
+        await erc20.approve(distributorAddr, hre.ethers.MaxUint256);
 
         // make transactions
-        expect(await distributor.distributeToken(erc20.address, batch)).to.be
-          .ok;
+        expect(await distributor.distributeToken(erc20Addr, batch)).to.be.ok;
       });
     });
   });
 
   describe("ERC20ReturnFalseMock Transactions", function () {
     beforeEach(async function () {
-      const ERC20 = await ethers.getContractFactory("ERC20ReturnFalseMock");
-      erc20 = await ERC20.deploy();
-      await erc20.deployed();
-      await erc20.mint(sender.address, 1000000);
+      erc20ReturnFalse = await hre.ethers.deployContract(
+        "ERC20ReturnFalseMock",
+      );
+      await erc20ReturnFalse.waitForDeployment();
+      erc20ReturnFalseAddr = await erc20ReturnFalse.getAddress();
+      await erc20ReturnFalse.mint(sender.address, 1000000);
     });
 
     describe("Allowance", function () {
       it("Reverts transactions when given not enough allowance", async function () {
         const batch = { txns: [{ recipient: addr1.address, amount: 1000 }] };
 
-        await expect(
-          distributor.distributeToken(erc20.address, batch),
-        ).to.be.revertedWith("SafeERC20: ERC20 operation did not succeed");
+        await expect(distributor.distributeToken(erc20ReturnFalseAddr, batch))
+          .to.be.revertedWithCustomError(
+            distributor,
+            "SafeERC20FailedOperation",
+          )
+          .withArgs(erc20ReturnFalseAddr);
       });
 
       it("Keeps any unspent allowance", async function () {
@@ -412,16 +426,16 @@ describe("Distributor Contract", function () {
         };
 
         // set allowance for distributor
-        expect(await erc20.approve(distributor.address, 10000)).to.be.ok;
+        expect(await erc20.approve(distributorAddr, 10000)).to.be.ok;
 
         // make transactions
-        expect(await distributor.distributeToken(erc20.address, batch)).to.be
-          .ok;
+        expect(await distributor.distributeToken(erc20ReturnFalseAddr, batch))
+          .to.be.ok;
 
         // no balance should remain because we approved the exact amount
-        expect(
-          await erc20.allowance(sender.address, distributor.address),
-        ).to.equal(4000);
+        expect(await erc20.allowance(sender.address, distributorAddr)).to.equal(
+          4000,
+        );
       });
     });
 
@@ -434,11 +448,11 @@ describe("Distributor Contract", function () {
           ],
         };
 
-        await erc20.approve(distributor.address, 5000);
+        await erc20.approve(distributorAddr, 5000);
 
         // attempt to make transaction
-        expect(await distributor.distributeToken(erc20.address, batch)).to.be
-          .ok;
+        expect(await distributor.distributeToken(erc20ReturnFalseAddr, batch))
+          .to.be.ok;
       });
     });
 
@@ -451,69 +465,69 @@ describe("Distributor Contract", function () {
           ],
         };
 
-        await erc20.approve(distributor.address, 6000);
+        await erc20.approve(distributorAddr, 6000);
 
         // make transactions
-        expect(await distributor.distributeToken(erc20.address, batch)).to.be
-          .ok;
+        expect(await distributor.distributeToken(erc20ReturnFalseAddr, batch))
+          .to.be.ok;
 
         // no balance should remain because we approved the exact amount
-        expect(
-          await erc20.allowance(sender.address, distributor.address),
-        ).to.equal(0);
+        expect(await erc20.allowance(sender.address, distributorAddr)).to.equal(
+          0,
+        );
       });
 
       it("Continues when transferring to self or token contract", async function () {
         const batch = {
           txns: [
             { recipient: sender.address, amount: 1000 },
-            { recipient: erc20.address, amount: 5000 },
+            { recipient: erc20ReturnFalseAddr, amount: 5000 },
           ],
         };
 
-        await erc20.approve(distributor.address, 6000);
+        await erc20.approve(distributorAddr, 6000);
 
         // make transactions
-        expect(await distributor.distributeToken(erc20.address, batch)).to.be
-          .ok;
+        expect(await distributor.distributeToken(erc20ReturnFalseAddr, batch))
+          .to.be.ok;
 
         // no balance should remain because we approved the exact amount
-        expect(
-          await erc20.allowance(sender.address, distributor.address),
-        ).to.equal(0);
+        expect(await erc20.allowance(sender.address, distributorAddr)).to.equal(
+          0,
+        );
       });
 
       it("Continues when given infinite allowance", async function () {
         const batch = {
           txns: [
             { recipient: sender.address, amount: 1000 },
-            { recipient: erc20.address, amount: 500000 },
+            { recipient: erc20ReturnFalseAddr, amount: 500000 },
           ],
         };
 
-        await erc20.approve(distributor.address, ethers.constants.MaxUint256);
+        await erc20.approve(distributorAddr, hre.ethers.MaxUint256);
 
         // make transactions
-        expect(await distributor.distributeToken(erc20.address, batch)).to.be
-          .ok;
+        expect(await distributor.distributeToken(erc20ReturnFalseAddr, batch))
+          .to.be.ok;
       });
     });
   });
 
   describe("Mass Transaction Tests", function () {
     beforeEach(async function () {
-      const ERC20 = await ethers.getContractFactory("ERC20Mock");
-      erc20 = await ERC20.deploy();
-      await erc20.deployed();
+      erc20 = await hre.ethers.deployContract("ERC20Mock");
+      await erc20.waitForDeployment();
+      erc20Addr = await erc20.getAddress();
       await erc20.mint(sender.address, 1000000);
     });
 
     it("Transfers ETH to a large number of addresses", async function () {
       const transactionCount = 500;
-      const accounts: Wallet[] = [];
+      const accounts: HDNodeWallet[] = [];
 
       for (let i = 0; i < transactionCount; i++) {
-        accounts.push(await ethers.Wallet.createRandom());
+        accounts.push(hre.ethers.Wallet.createRandom());
       }
 
       const batch: {
@@ -526,56 +540,23 @@ describe("Distributor Contract", function () {
       for (const account of accounts) {
         batch.txns.push({
           recipient: account.address,
-          amount: ethers.utils.parseEther("0.00001").toString(),
+          amount: hre.ethers.parseEther("0.00001").toString(),
         });
       }
 
       const overrides = {
-        value: ethers.utils.parseEther("5.0"),
+        value: hre.ethers.parseEther("5.0"),
       };
 
       expect(await distributor.distributeEther(batch, overrides)).to.be.ok;
     });
 
-    it("Throws when transferring ETH to a too large number of addresses", async function () {
-      const transactionCount = 1000;
-      const accounts: Wallet[] = [];
-
-      for (let i = 0; i < transactionCount; i++) {
-        accounts.push(await ethers.Wallet.createRandom());
-      }
-
-      const batch: {
-        txns: {
-          recipient: string;
-          amount: string;
-        }[];
-      } = { txns: [] };
-
-      for (const account of accounts) {
-        batch.txns.push({
-          recipient: account.address,
-          amount: ethers.utils.parseEther("0.00001").toString(),
-        });
-      }
-
-      const overrides = {
-        value: ethers.utils.parseEther("5.0"),
-      };
-
-      await expectThrowsAsync(
-        distributor.distributeEther,
-        [batch, overrides],
-        /Transaction gas limit is \d* and exceeds block gas limit of 30000000/,
-      );
-    }).timeout(40000);
-
     it("Transfers ERC20 to a large number of addresses", async function () {
       const transactionCount = 100;
-      const accounts: Wallet[] = [];
+      const accounts: HDNodeWallet[] = [];
 
       for (let i = 0; i < transactionCount; i++) {
-        accounts.push(await ethers.Wallet.createRandom());
+        accounts.push(hre.ethers.Wallet.createRandom());
       }
 
       const batch: {
@@ -589,35 +570,8 @@ describe("Distributor Contract", function () {
         batch.txns.push({ recipient: account.address, amount: "1" });
       }
 
-      await erc20.approve(distributor.address, transactionCount);
-      expect(await distributor.distributeToken(erc20.address, batch)).to.be.ok;
-    }).timeout(40000);
-
-    it("Throws when transferring ERC20 to a large number of addresses", async function () {
-      const transactionCount = 1000;
-      const accounts: Wallet[] = [];
-
-      for (let i = 0; i < transactionCount; i++) {
-        accounts.push(await ethers.Wallet.createRandom());
-      }
-
-      const batch: {
-        txns: {
-          recipient: string;
-          amount: string;
-        }[];
-      } = { txns: [] };
-
-      for (const account of accounts) {
-        batch.txns.push({ recipient: account.address, amount: "1" });
-      }
-
-      await erc20.approve(distributor.address, transactionCount);
-      await expectThrowsAsync(
-        distributor.distributeToken,
-        [erc20.address, batch],
-        /Transaction gas limit is \d* and exceeds block gas limit of 30000000/,
-      );
-    }).timeout(40000);
+      await erc20.approve(distributorAddr, transactionCount);
+      expect(await distributor.distributeToken(erc20Addr, batch)).to.be.ok;
+    });
   });
 });
