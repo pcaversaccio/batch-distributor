@@ -1,27 +1,27 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import hre, { ethers } from "hardhat";
+import hre from "hardhat";
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function main() {
-  const contract = await ethers.deployContract("BatchDistributor");
+  const batchDistributor = await hre.ethers.deployContract("BatchDistributor");
 
-  await contract.deployed();
-  const contractAddress = contract.address;
+  await batchDistributor.waitForDeployment();
+  const batchDistributorAddress = await batchDistributor.getAddress();
 
-  console.log("BatchDistributor deployed to:", contractAddress);
+  console.log("BatchDistributor deployed to:", batchDistributorAddress);
 
   await delay(30000); // Wait for 30 seconds before verifying the contract
 
   await hre.run("verify:verify", {
-    address: contractAddress,
+    address: batchDistributorAddress,
   });
 
   // await hre.tenderly.verify({
   //   name: "BatchDistributor",
-  //   address: contractAddress,
+  //   address: batchDistributorAddress,
   // });
 }
 
