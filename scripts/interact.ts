@@ -1,5 +1,9 @@
 import hre from "hardhat";
 
+// Colour codes for terminal prints
+const RESET = "\x1b[0m";
+const GREEN = "\x1b[32m";
+
 async function distributeEther() {
   const testnetAddress = "0xBFe76cA9bAbF3566A89e215782d97ADb87Fa55C6";
   const batchDistributor = await hre.ethers.getContractAt(
@@ -39,7 +43,8 @@ async function distributeEther() {
     { txns: txns },
     { value: msgValue },
   );
-  console.log("The transaction hash is:", tx.hash);
+  console.log("The transaction hash is: " + `${GREEN}${tx.hash}${RESET}\n`);
+  console.log("Waiting until the transaction is confirmed...\n");
   const receipt = await tx.wait();
   console.log(
     "The transaction returned the following transaction receipt:\n",
