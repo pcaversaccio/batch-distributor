@@ -587,6 +587,7 @@ const config: HardhatUserConfig = {
       chainId: 81457,
       url: vars.get("BLAST_MAINNET_URL", "https://rpc.blast.io"),
       accounts,
+      ledgerAccounts,
     },
     kromaTestnet: {
       chainId: 2358,
