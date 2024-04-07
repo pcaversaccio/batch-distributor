@@ -5,7 +5,7 @@ const RESET = "\x1b[0m";
 const GREEN = "\x1b[32m";
 
 async function distributeEther() {
-  const testnetAddress = "0xBFe76cA9bAbF3566A89e215782d97ADb87Fa55C6";
+  const testnetAddress = "0xE710359D8E887afDF66053E6a9e044E0499e3446";
   const batchDistributor = await hre.ethers.getContractAt(
     "BatchDistributor",
     testnetAddress,
