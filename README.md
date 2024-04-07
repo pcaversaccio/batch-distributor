@@ -55,15 +55,15 @@ The parameter `batch` is a nested struct object that contains an array of tuples
 
 ## Test Deployments
 
-The smart contract [`BatchDistributor.sol`](./contracts/BatchDistributor.sol) has been deployed to the following test networks:
+The smart contract [`BatchDistributor`](./contracts/BatchDistributor.sol) has been deployed to the following test networks:
 
-- **Goerli:** [`0xBFe76cA9bAbF3566A89e215782d97ADb87Fa55C6`](https://goerli.etherscan.io/address/0xBFe76cA9bAbF3566A89e215782d97ADb87Fa55C6)
-- **Sepolia:** [`0xBFe76cA9bAbF3566A89e215782d97ADb87Fa55C6`](https://sepolia.etherscan.io/address/0xBFe76cA9bAbF3566A89e215782d97ADb87Fa55C6)
+- **Goerli:** [`0xE710359D8E887afDF66053E6a9e044E0499e3446`](https://sepolia.etherscan.io/address/0xE710359D8E887afDF66053E6a9e044E0499e3446)
+- **Sepolia:** [`0xE710359D8E887afDF66053E6a9e044E0499e3446`](https://holesky.etherscan.io/address/0xE710359D8E887afDF66053E6a9e044E0499e3446)
 
 ### Examples
 
-- _Example 1:_ ETH distribution [`0x88373d0c99927a70f81d474b444848dd83e04b0d7100a018152a38aa8fab0b8b`](https://goerli.etherscan.io/tx/0x88373d0c99927a70f81d474b444848dd83e04b0d7100a018152a38aa8fab0b8b)
+- _Example 1:_ ETH distribution [`0x1a7345857f653944d5d555a81057a1ff0e364929542ab1db2a037496f2ba6f6b`](https://sepolia.etherscan.io/tx/0x1a7345857f653944d5d555a81057a1ff0e364929542ab1db2a037496f2ba6f6b)
   - Input tuple data `batch`: `[[["0x9F3f11d72d96910df008Cfe3aBA40F361D2EED03",1],["0x3854Ca47Abc62A3771fE06ab45622A42C4A438Cf",2]]]`
-- _Example 2:_ ERC-20 token distribution [`0x25bec5c3e0ae70acef4457ced251ab92c6414e2018a868fa4c6e5a1e44428395`](https://goerli.etherscan.io/tx/0x25bec5c3e0ae70acef4457ced251ab92c6414e2018a868fa4c6e5a1e44428395)
-  - Input `token` address: [`0x11fE4B6AE13d2a6055C8D9cF65c55bac32B5d844`](https://goerli.etherscan.io/address/0x11fE4B6AE13d2a6055C8D9cF65c55bac32B5d844)
+- _Example 2:_ ERC-20 token distribution [`0x224448bdb43314f30236c147447e29e002515c0e285cc76132ac4a270e1f56a8`](https://sepolia.etherscan.io/tx/0x224448bdb43314f30236c147447e29e002515c0e285cc76132ac4a270e1f56a8)
+  - Input `token` address (Wrapped Ether (WETH)): [`0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14`](https://sepolia.etherscan.io/address/0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14)
   - Input tuple data `batch`: `[[["0x9F3f11d72d96910df008Cfe3aBA40F361D2EED03",50],["0x3854Ca47Abc62A3771fE06ab45622A42C4A438Cf",50]]]`
