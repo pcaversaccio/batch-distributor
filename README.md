@@ -57,8 +57,8 @@ The parameter `batch` is a nested struct object that contains an array of tuples
 
 The smart contract [`BatchDistributor`](./contracts/BatchDistributor.sol) has been deployed to the following test networks:
 
-- **Goerli:** [`0xE710359D8E887afDF66053E6a9e044E0499e3446`](https://sepolia.etherscan.io/address/0xE710359D8E887afDF66053E6a9e044E0499e3446)
-- **Sepolia:** [`0xE710359D8E887afDF66053E6a9e044E0499e3446`](https://holesky.etherscan.io/address/0xE710359D8E887afDF66053E6a9e044E0499e3446)
+- **Sepolia:** [`0xE710359D8E887afDF66053E6a9e044E0499e3446`](https://sepolia.etherscan.io/address/0xE710359D8E887afDF66053E6a9e044E0499e3446)
+- **Holešky (Holešovice):** [`0xE710359D8E887afDF66053E6a9e044E0499e3446`](https://holesky.etherscan.io/address/0xE710359D8E887afDF66053E6a9e044E0499e3446)
 
 ### Examples
 
