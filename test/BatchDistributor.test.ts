@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { expect } from "chai";
 import { HDNodeWallet } from "ethers";
 import hre from "hardhat";
@@ -9,7 +10,7 @@ import {
 } from "../typechain-types";
 
 async function expectThrowsAsync(
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   method: Function,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: any[],
