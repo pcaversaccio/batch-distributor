@@ -2,9 +2,7 @@
 pragma solidity 0.8.29;
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {
-    SafeERC20
-} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 /**
  * @dev Error that occurs when transferring ether has failed.
@@ -68,9 +66,7 @@ contract BatchDistributor {
          */
         for (uint256 i; i < length; ++i) {
             // solhint-disable-next-line avoid-low-level-calls
-            (bool sent, ) = batch.txns[i].recipient.call{
-                value: batch.txns[i].amount
-            }("");
+            (bool sent, ) = batch.txns[i].recipient.call{value: batch.txns[i].amount}("");
             if (!sent) revert EtherTransferFail(address(this));
         }
 
