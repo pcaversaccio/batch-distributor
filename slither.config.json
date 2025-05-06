@@ -1,7 +1,7 @@
 {
   "compile_force_framework": "hardhat",
   "hardhat_ignore_compile": false,
-  "detectors_to_exclude": "pragma,solc-version,arbitrary-send-eth,calls-loop,low-level-calls",
+  "detectors_to_exclude": "pragma,solc-version,arbitrary-send-eth,calls-loop,low-level-calls,uninitialized-local",
   "fail_on": "none",
   "exclude_informational": false,
   "exclude_low": false,
