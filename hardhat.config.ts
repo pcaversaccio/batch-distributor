@@ -100,7 +100,7 @@ const config: HardhatUserConfig = {
       initialBaseFeePerGas: 0,
       chainId: 31337,
       hardfork: "osaka",
-      blockGasLimit: 16_777_216, // Since `osaka`, the maximum gas usage per transaction is 16,777,216 (2^24) gas (https://eips.ethereum.org/EIPS/eip-7825)
+      blockGasLimit: 16_777_216, // Since `osaka`, the maximum gas usage per transaction is 16,777,216 (2**24) gas (https://eips.ethereum.org/EIPS/eip-7825)
       forking: {
         url: vars.get("ETH_MAINNET_URL", ethMainnetUrl),
         // The Hardhat network will by default fork from the latest mainnet block
