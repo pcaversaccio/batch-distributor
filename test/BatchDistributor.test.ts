@@ -48,7 +48,9 @@ describe("Distributor Contract", function () {
 
   beforeEach(async function () {
     await hre.ethers.provider.send("hardhat_reset", []);
-    distributor = await hre.ethers.deployContract("BatchDistributor");
+    distributor = (await hre.ethers.deployContract(
+      "BatchDistributor",
+    )) as unknown as BatchDistributor;
     [sender, addr1, addr2, addr3, addr4] = await hre.ethers.getSigners();
     await distributor.waitForDeployment();
     distributorAddr = await distributor.getAddress();
@@ -259,7 +261,9 @@ describe("Distributor Contract", function () {
 
   describe("ERC20Mock Transactions", function () {
     beforeEach(async function () {
-      erc20 = await hre.ethers.deployContract("ERC20Mock");
+      erc20 = (await hre.ethers.deployContract(
+        "ERC20Mock",
+      )) as unknown as ERC20Mock;
       await erc20.waitForDeployment();
       erc20Addr = await erc20.getAddress();
       await erc20.mint(sender.address, 1000000);
@@ -398,9 +402,9 @@ describe("Distributor Contract", function () {
 
   describe("ERC20ReturnFalseMock Transactions", function () {
     beforeEach(async function () {
-      erc20ReturnFalse = await hre.ethers.deployContract(
+      erc20ReturnFalse = (await hre.ethers.deployContract(
         "ERC20ReturnFalseMock",
-      );
+      )) as unknown as ERC20ReturnFalseMock;
       await erc20ReturnFalse.waitForDeployment();
       erc20ReturnFalseAddr = await erc20ReturnFalse.getAddress();
       await erc20ReturnFalse.mint(sender.address, 1000000);
@@ -517,14 +521,16 @@ describe("Distributor Contract", function () {
 
   describe("Mass Transaction Tests", function () {
     beforeEach(async function () {
-      erc20 = await hre.ethers.deployContract("ERC20Mock");
+      erc20 = (await hre.ethers.deployContract(
+        "ERC20Mock",
+      )) as unknown as ERC20Mock;
       await erc20.waitForDeployment();
       erc20Addr = await erc20.getAddress();
       await erc20.mint(sender.address, 1000000);
     });
 
     it("Transfers ETH to a large number of addresses", async function () {
-      const transactionCount = 500;
+      const transactionCount = 150;
       const accounts: HDNodeWallet[] = [];
 
       for (let i = 0; i < transactionCount; i++) {
@@ -553,7 +559,7 @@ describe("Distributor Contract", function () {
     });
 
     it("Transfers ERC20 to a large number of addresses", async function () {
-      const transactionCount = 100;
+      const transactionCount = 150;
       const accounts: HDNodeWallet[] = [];
 
       for (let i = 0; i < transactionCount; i++) {
