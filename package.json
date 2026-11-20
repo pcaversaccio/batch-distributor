@@ -19,7 +19,7 @@
   },
   "author": "0x6d61646520666f722074686520776f726c6421",
   "license": "MIT",
-  "packageManager": "pnpm@12.19.0",
+  "packageManager": "pnpm@12.20.0",
   "scripts": {
     "help": "hardhat help",
     "accounts": "hardhat accounts",
@@ -242,7 +242,7 @@
     "hardhat-abi-exporter": "^2.11.0",
     "hardhat-contract-sizer": "^2.10.1",
     "hardhat-gas-reporter": "^2.3.0",
-    "prettier": "^3.9.10",
+    "prettier": "^3.10.1",
     "prettier-plugin-solidity": "^2.4.1",
     "solhint": "^6.2.5",
     "solidity-coverage": "^0.8.17",
